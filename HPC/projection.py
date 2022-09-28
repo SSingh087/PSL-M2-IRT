@@ -1,9 +1,10 @@
 import numpy as np
 import cheby as c
 import scipy.integrate as integrate
+import matplotlib.pyplot as plt
 
 f = lambda x: np.cos(np.pi * x / 2)**3 + ((x + 1)**3)/8
-               
+
 def projection(N, M, n, x):
     """
     Parameters
@@ -15,7 +16,7 @@ def projection(N, M, n, x):
     Returns
     -------
       <f|pn>
-    ----------
+    ---------- x pn
       <pn|pn>
     """
     num = integrate.quad(lambda x: c.Cheby(N, M).eval_coeffs_pn(x, n) * f(x),
@@ -26,10 +27,15 @@ def projection(N, M, n, x):
     fn_hat = num/den
     return fn_hat * c.Cheby(N, M).eval_coeffs_pn(x, n)
 
-N = 4
-x = np.linspace(0, 1, 100)
+K = 4
+x = np.linspace(-1, 1, 1000)
 Pf = np.zeros(len(x))
-for i in range(N):
+for i in range(K):
     for j in x:
-        Pf[i] += projection(5, 5, i, j)
-print(Pf)
+        Pf[i] += projection(8, 8, i, j)
+print(f(x), Pf)
+plt.plot(x, f(x), label="f(x)")
+plt.plot(x, Pf, label="P$_N$f")
+plt.legend()
+plt.title("N=4")
+plt.show()
