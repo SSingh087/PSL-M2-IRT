@@ -19,13 +19,13 @@ def projection(N, M, n, x):
     ---------- x pn
       <pn|pn>
     """
-    num = integrate.quad(lambda x: c.Cheby(N, M).eval_coeffs_pn(x, n) * f(x),
+    num = integrate.quad(lambda x: c.Cheby(N).eval_coeffs_pn(x, n) * f(x),
                                 -1, 1)[0]
-    den = integrate.quad(lambda x: c.Cheby(N, M).eval_coeffs_pn(x, n) * \
-                                 c.Cheby(N, M).eval_coeffs_pn(x, n),
+    den = integrate.quad(lambda x: c.Cheby(N).eval_coeffs_pn(x, n) * \
+                                 c.Cheby(N).eval_coeffs_pn(x, n),
                                 -1, 1)[0]
     fn_hat = num/den
-    return fn_hat * c.Cheby(N, M).eval_coeffs_pn(x, n)
+    return fn_hat * c.Cheby(N).eval_coeffs_pn(x, n)
 
 K = 4
 x = np.linspace(-1, 1, 1000)

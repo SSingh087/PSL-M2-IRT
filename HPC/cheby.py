@@ -8,14 +8,14 @@ class Cheby():
         calculated
     n : nth order of polynomial
     """
-    def __init__(self, N, M):
+    def __init__(self, N):
         """
         Parameters
         ----------
         N : Columns - total of N polynomials
         M : Rows - powers of x
         """
-        self.N, self.M = N, M
+        self.N, self.M = N+1, N+1
         self.T = np.zeros((self.N, self.M))
         self.T[0,0] = 1
         self.T[1,1] = 1
