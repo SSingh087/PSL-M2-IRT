@@ -11,7 +11,7 @@ def test_orthogonality(N, n, m):
 def eval_coeffs(N, n, x):
     print(c.Cheby(N).eval_coeffs_pn(x, n))
     print(c.Cheby(N).eval_coeffs_p(x))
-
+    
 cheby_matrix(8)
 eval_coeffs(8, 5, 2)
 test_orthogonality(8, 1, 2)

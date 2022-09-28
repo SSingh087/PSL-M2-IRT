@@ -64,7 +64,13 @@ for i in range(len(x)):
 plt.plot(x,f(x), label="f(x)")
 plt.plot(x,inp, label="P$_N$f")
 plt.legend()
+plt.xlabel('x')
 plt.title("N=8")
 plt.show()
+spectral_conv = abs(inp-f(x))
+plt.title("N=8")
+plt.ylabel("I$_N$f - f")
+plt.xlabel('x')
+plt.plot(x, spectral_conv)
+plt.show()
 
-#eval_spectral convergence of I N f to f
