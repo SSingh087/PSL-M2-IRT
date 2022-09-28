@@ -66,6 +66,6 @@ class Cheby():
         inner product.
     
         """
-        Tn = self.eval_coeff(x, n)
-        Tm = self.eval_coeff(x, m)
+        Tn = self.eval_coeffs_pn(x, n)
+        Tm = self.eval_coeffs_pn(x, m)
         return Tn * Tm / np.sqrt(1 - x**2)
