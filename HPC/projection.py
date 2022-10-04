@@ -25,7 +25,7 @@ def projection(N, n, x):
                                  c.Cheby(N).eval_coeffs_pn(x, n),
                                 -1, 1)[0]
     fn_hat = num/den
-    return fn_hat * c.Cheby(N).eval_coeffs_pn(x, n)
+    return fn_hat * c.Cheby(N).eval_coeffs_pn(x, n) / np.sqrt(1 - x**2)
 
 N = 4
 x = np.linspace(-1, 1, 100)
