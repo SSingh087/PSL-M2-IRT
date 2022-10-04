@@ -33,6 +33,11 @@ for i in range(N):
 	Lij[:,i] = der_func(a, N)
 print(Lij)
 
+
+for j in range(N):
+    Lij[N-1, j] = 1
+
+
 fns, fna = np.zeros(N), np.zeros(N)
 for i in range(N):
     fns[i] = interpolant.interpolant(N).fn_tilde(i, source)
@@ -42,10 +47,10 @@ for j in range(N):
 	if (j%2 == 0): Lij[N-1, j] = 1
 	else : Lij[N-2, j] = -1
 fns[N-2] = 0
-
-for j in range(N):
-    Lij[N-1, j] = 1
 fns[N-1] = 0
+
+
+
 
 Lij_inv = np.linalg.solve(Lij, fns)
 

@@ -32,20 +32,20 @@ for i in range(N):
 	a[i] = 1.
 	Lij[:,i] = der_func(a, N)
 
+for j in range(N):
+    Lij[N-1, j] = 1
+
 s_coloc, fna = np.zeros(N), np.zeros(N)
 for i in range(N):
     x_coloc = interpolant.xi(i, N)
-    fna[i] = interpolant.interpolant(N).fn_tilde(i, analytic)
     s_coloc[i] = source(x_coloc)
+    fna[i] = interpolant.interpolant(N).fn_tilde(i, analytic)
     print(s_coloc[i])
 
 for j in range(N):
 	if (j%2 == 0): Lij[N-1, j] = 1
 	else : Lij[N-2, j] = -1
 s_coloc[N-2] = 0
-
-for j in range(N):
-    Lij[N-1, j] = 1
 s_coloc[N-1] = 0
 
 Lij_inv = np.linalg.solve(Lij, s_coloc)
@@ -53,7 +53,6 @@ print(Lij_inv)
 x = np.linspace(-1,1,100)
 y = np.zeros(len(x))
 
-T = c.Cheby(N)
 for i in range(len(x)):
     res = 0
     for j in range(N):
