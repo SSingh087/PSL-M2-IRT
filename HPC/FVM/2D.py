@@ -17,8 +17,9 @@ def time_step_get(gamma, rho, vx, vy, p, dx):
     dt = dx/np.amax((cmax))
     return dt
 
-def characteristic_speed_get(gamma, rho, v, p):
+def characteristic_speed_get(gamma, rho, vx, vy, p):
     # v can be vx or vy
+    v = np.sqrt(vx**2 + vy**2)
     csound = csound_get(gamma, rho, p)
     cmax = v + csound
     cmin = v - csound
@@ -82,7 +83,7 @@ def solver_hll_get_flux(varL, varR, sL, sR, fluxL, fluxR):
     return flux
 
 def advance(dt, gamma, dx, U_int, U_old):
-    Dflux_total = np.zeros((linX,linY))
+    Dflux_total = np.zeros((linX.shape[0],linY.shape[0]))
     for idir in [0,1]: # loop direction
         U_int_prim = phys_prim(gamma, U_int[0], U_int[3], U_int[4], U_int[5])
         U_int_prim_surfL, U_int_prim_surfR = space_reconstrution(i, 
@@ -139,10 +140,24 @@ if __name__ == "__main__":
             vy[j, i] = -0.01*np.sin(2*np.pi*((linX[i]-xmin)/(xmax-xmin)))* \
                 (np.exp(-(np.abs(linY[j]-(ymax-ymin)/2))/(2. * 0.1 )))
     
-    for t in range(len(T)):
-        # evaluate conservative variables.
-        rho, momx, momy, energy = phys_cons(gamma, rho, vx, vy, p)
+    # declare energy initially
+    E = p / (gamma - 1) + .5 * rho * np.sqrt(vx**2 + vy**2)
+    
+    # Define conserved and primitive vector
+    U = np.array([rho, rho*np.sqrt(vx**2 + vy**2), E])
+    F = np.array([rho, np.sqrt(vx**2 + vy**2), p])
+    
+    rho, momx, momy, energy = phys_cons(gamma, rho, vx, vy, p)
+    
+    rho, vx, vy, p = phys_prim(gamma, rho, momx, momy, energy)
+    
+    # boundary condition
+    # PERIODIC in X AXIS
+    #rho[ :] = rho[len(linX), :]
+    #rho[:, :len(linY)-1,:]=rho[:,len(linY)]
 
+    for t in range(len(T)):
+        
         # copy conservative variables to old variables
         rho_old = np.copy(rho)
         momx_old = np.copy(momx)
@@ -165,4 +180,3 @@ if __name__ == "__main__":
         cmin_right, cmax_right = characteristic_speed_get(gamma, rhoR, vR, pR)
         cmin=min(cmin_left,cmin_right)
         cmax=max(cmax_right,cmax_right)
-        
