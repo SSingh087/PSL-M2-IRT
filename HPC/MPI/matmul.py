@@ -13,10 +13,11 @@ if rang== 0:
 	A = np.random.random((N,N))
         B = np.random.random((N,N))
 else:
-     	A, B = None, None
+        # dummy	values for transpose to	work if	rank != 0
+     	A, B = np.zeros((N,N)), np.zeros((N,N))
 
 A = comm.bcast(A, root=0)
-B = comm.scatter(B, root=0)
+B = comm.scatter(B.transpose(), root=0)
 C = A[rang]* B
 
 C = np.array(comm.gather(C, root=0))
