@@ -13,13 +13,14 @@ if rang== 0:
 	A = np.random.random((N,N))
         B = np.random.random((N,N))
 else:
-        # dummy	values for transpose to	work if	rank != 0
-     	A, B = np.zeros((N,N)), np.zeros((N,N))
+     	A, B = None, None
 
 A = comm.bcast(A, root=0)
-B = comm.scatter(B.transpose(), root=0)
-C = A[rang]* B
+B = comm.scatter(B, root=0)
 
-C = np.array(comm.gather(C, root=0))
-
+C = np.empty(A.shape)
+for i in range(len(A)):
+        for j in range(len(B)):
+                C[i,j] = np.dot(A[:,i], B)
+C = sum(comm.gather(C, root=0))
 print(rang, "has", C)
