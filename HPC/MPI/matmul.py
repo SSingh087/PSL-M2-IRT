@@ -1,4 +1,22 @@
 #!/usr/bin/env python
+"""
+Algo
+in 0
+create A, B
+in not 0 
+Create none
+
+broadcast A
+Scatter B 
+
+Pad B : np.pad(B, ((rang, rang - 1- N),(0,0)), 'constant') 
+# padding is not working*
+
+C = A @ B
+
+sum (gather C)
+
+"""
 
 import mpi4py.MPI as MPI
 import numpy as np
